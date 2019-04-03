@@ -1,0 +1,248 @@
+import os, time
+import argparse
+import cv2
+import numpy as np
+from sklearn.metrics import confusion_matrix
+import xml.etree.ElementTree as ET
+import pickle
+from os import listdir, getcwd
+from os.path import join
+#--------------------------------------------------------
+modelType = "yolo"  #yolo or yolo-tiny
+confThreshold = 0.75  #Confidence threshold
+nmsThreshold = 0.4   #Non-maximum suppression threshold
+
+classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";
+modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";
+modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";
+
+path_out = '/data/home/mio/yeh_image/Test_image_yolo/' ##output image file
+path_in = '/data/home/mio/yeh_image/Test_image/' ##resd test image
+path_xml = '/data/home/mio/yeh_image/Test_xml/' ##read test xml
+
+displayScreen = False  #Do you want to show the image on LCD?
+outputToFile = True   #output the predicted result to image or video file
+path_read = []
+
+#Label & Box
+fontSize = 1
+fontBold = 2
+labelColor = (0,0,255)
+boxbold = 5
+boxColor = (255,255,255)
+#--------------------------------------------------------
+
+if(modelType=="yolo"):
+    inpWidth = 608       #Width of network's input image
+    inpHeight = 608      #Height of network's input image
+else:
+    inpWidth = 416       #Width of network's input image
+    inpHeight = 416      #Height of network's input image
+
+
+classes = None
+with open(classesFile, 'rt') as f:
+    classes = f.read().rstrip('\n').split('\n')
+ 
+net = cv2.dnn.readNetFromDarknet(modelConfiguration, modelWeights)
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_OPENCV)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CPU)
+
+parser = argparse.ArgumentParser(description="Do you wish to scan for live hosts or conduct a port scan?")
+parser.add_argument("-i", dest='image', action='store', help='Image')
+parser.add_argument("-v", dest='video', action='store',help='Video file')
+
+def closest_colour(requested_colour):
+    min_colours = {}
+    for key, name in webcolors.css3_hex_to_names.items():
+        r_c, g_c, b_c = webcolors.hex_to_rgb(key)
+        rd = (r_c - requested_colour[0]) ** 2
+        gd = (g_c - requested_colour[1]) ** 2
+        bd = (b_c - requested_colour[2]) ** 2
+        min_colours[(rd + gd + bd)] = name
+    return min_colours[min(min_colours.keys())]
+
+def get_colour_name(requested_colour):
+    try:
+        closest_name = actual_name = webcolors.rgb_to_name(requested_colour)
+    except ValueError:
+        closest_name = closest_colour(requested_colour)
+        actual_name = None
+    return actual_name, closest_name
+
+def getROI_Color(roi):
+    mean_blue = np.mean(roi[:,:,0])
+    mean_green = np.mean(roi[:,:,1])
+    mean_red = np.mean(roi[:,:,2])
+    actual_name, closest_name = get_colour_name((mean_red, mean_green, mean_blue))
+
+    return actual_name, closest_name, (mean_blue, mean_green, mean_red)
+#-----------------------------------------------------------------
+
+# Get the names of the output layers
+def getOutputsNames(net):
+    layersNames = net.getLayerNames()
+    return [layersNames[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
+def postprocess(frame, outs, orgFrame):
+    frameHeight = frame.shape[0]
+    frameWidth = frame.shape[1]
+ 
+    classIds = []
+    confidences = []
+    boxes = []
+    for out in outs:
+        for detection in out:
+            scores = detection[5:]
+            classId = np.argmax(scores)
+            confidence = scores[classId]
+            if confidence > confThreshold:
+                center_x = int(detection[0] * frameWidth)
+                center_y = int(detection[1] * frameHeight)
+                width = int(detection[2] * frameWidth)
+                height = int(detection[3] * frameHeight)
+                left = int(center_x - width / 2)
+                top = int(center_y - height / 2)
+                classIds.append(classId)
+                confidences.append(float(confidence))
+                boxes.append([left, top, width, height])
+#     print(classIds)            
+    indices = cv2.dnn.NMSBoxes(boxes, confidences, confThreshold, nmsThreshold)
+    for i in indices:
+        i = i[0]
+        box = boxes[i]
+        left = box[0]
+        top = box[1]
+        width = box[2]
+        height = box[3]
+        drawPred(classIds[i], confidences[i], left, top, left + width, top + height, orgFrame)        
+        
+#---------------------------------##---------------------------------##--------------------------#
+#---------------------------------##---------------------------------##--------------------------#
+
+def drawPred(classId, conf, left, top, right, bottom, orgFrame):
+    label = '%.2f' % conf
+    labelName = '%s:%s' % (classes[classId], label)
+#     striou = '%s' % iou
+    for x in range(len(xmin)):
+        origin = (int(ymin[x]), int(xmin[x]), int(ymax[x]), int(xmax[x]))# (top, left, bottom, right)
+        test = (int(top),int(left),int(bottom),int(right) )
+        cx1 = origin[0]
+        cy1 = origin[1]
+        cx2 = origin[2]
+        cy2 = origin[3]
+        gx1 = test[0]
+        gy1 = test[1]
+        gx2 = test[2]
+        gy2 = test[3]
+        carea = (cx2 - cx1) * (cy2 - cy1)
+        garea = (gx2 - gx1) * (gy2 - gy1)
+        x1 = max(cx1, gx1)
+        y1 = max(cy1, gy1)
+        x2 = min(cx2, gx2)
+        y2 = min(cy2, gy2)
+        w = max(0, x2 - x1)
+        h = max(0, y2 - y1)
+        area = w * h
+        iou = area / (carea + garea - area)
+        striou = '%.2f' % iou
+        iouName = '%s' % striou
+        y_top  = int(ymax[x])-10
+        if iou >= 0.5 :
+            cv2.putText(frame, iouName, (int(xmin[x]) , y_top), cv2.FONT_HERSHEY_COMPLEX, fontSize, (0, 255, 0), 2)
+#             cv2.putText(frame, str_iou , (xmin[x], ymin[x]-10), cv2.FONT_HERSHEY_COMPLEX, fontSize, labelColor, fontBold)
+#              print(iou)
+#             print(type(iou))
+#             str_iou = str(iou)
+#             print(str(iou))
+#             print(type(str_iou))
+        ####
+        cv2.rectangle(frame, (int(xmin[x]), int(ymin[x])), (int(xmax[x]), int(ymax[x])), (0, 255, 0), 2)
+#         cv2.putText(frame, striou, (int(xmin[x]) , y_top), cv2.FONT_HERSHEY_COMPLEX, fontSize, (0, 255, 0), 1)
+        cv2.rectangle(frame, (left, top), (right, bottom), (0, 0 , 255), 2)#boxColor, boxbold)
+        cv2.putText(frame, labelName, (left, top-10), cv2.FONT_HERSHEY_COMPLEX, fontSize, labelColor, fontBold)
+    print(labelName)
+
+
+
+jpg = os.listdir(path_in)
+#args = parser.parse_args()
+xml_n = os.listdir(path_xml)
+
+for i in range(len(jpg)):
+    tree = ET.parse(path_xml+os.path.splitext(jpg[i])[0]+'.xml')
+    root = tree.getroot()
+    xmin = []
+    xmax = []
+    ymin = []
+    ymax = []
+    for elem in tree.iter(tag='xmin'):
+        xmin.append(elem.text)
+    for elem in tree.iter(tag='xmax'):
+        xmax.append(elem.text)
+    for elem in tree.iter(tag='ymin'):
+        ymin.append(elem.text)
+    for elem in tree.iter(tag='ymax'):
+        ymax.append(elem.text)
+    if (path_in+jpg[i]):
+    # Open the image file
+        if not os.path.isfile(path_in+jpg[i]):
+            print("Input image file ", path_in+jpg[i], " doesn't exist")
+            sys.exit(1)
+        cap = cv2.VideoCapture(path_in+jpg[i])
+        outputFile = path_out + os.path.splitext(jpg[i])[0] + '_yolo.jpg'
+        #img = im.read(outputFile)
+        #cv2.rectangle(img, (xmin[x], ymin[x]), (xmax[x], ymax[x]), (0, 255, 0), 2)
+        #path_read.append('/data/home/mio/3_pelvis/org_pelvis/Labels/'+os.path.splitext(jpg[i])[0]+ '.xml')
+
+    elif (args.video):
+    # Open the video file
+        if not os.path.isfile(args.video):
+            print("Input video file ", args.video, " doesn't exist")
+            sys.exit(1)
+        cap = cv2.VideoCapture(args.video)
+        outputFile = args.video[:-4]+'_yolo.avi'
+        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        out = cv2.VideoWriter(outputFile, fourcc, 30.0, (round(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),round(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    else:
+    # Webcam input
+        cap = cv2.VideoCapture(0)
+
+    i = 0
+    while cv2.waitKey(1) < 0:
+        hasFrame, frame = cap.read()
+
+        i += 1 
+        if not hasFrame:
+            print("Done processing !!!")
+            print("Output file is stored as ", outputFile)
+            cv2.waitKey(3000)
+            break
+
+        orgFrame = frame.copy()
+
+        blob = cv2.dnn.blobFromImage(frame, 1/255, (inpWidth, inpHeight), [0,0,0], 1, crop=False)
+        net.setInput(blob)
+        outs = net.forward(getOutputsNames(net))
+        postprocess(frame, outs, orgFrame)
+
+        t, _ = net.getPerfProfile()
+    #label = 'Inference time: %.2f ms' % (t * 1000.0 / cv.getTickFrequency())
+
+    #if (args.image):
+        if (path_in+jpg[i]):
+            if(outputToFile):
+                cv2.imwrite(outputFile, frame.astype(np.uint8))
+
+            if(displayScreen):
+                cv2.imshow("Predicted", frame)
+
+        else:
+            print("Frame #{} processed.".format(i))
+
+            if(outputToFile):
+                out.write(frame)
+
+            if(displayScreen):
+                cv.imshow("frame", frame)
+                cv.waitKey(1)
