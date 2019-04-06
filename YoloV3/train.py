@@ -15,25 +15,18 @@ xmlFolder = "/data/home/mio/yeh_image/Labels"
 imgFolder = "/data/home/mio/yeh_image/Images"
 saveYoloPath = "/data/home/mio/yeh_image/Yolos"
 classList = { "stas":0 , "dog":1 }
-#xmlFolder = "/data/home/mio/3_pelvis/org_pelvis/Labels"
-#imgFolder = "/data/home/mio/3_pelvis/org_pelvis/Images"
-#saveYoloPath = "/data/home/mio/3_pelvis/org_pelvis/Yolos"
-#classList = { "femur":0,"sacroiliac joint ilium":1 , "sacrum":2 , "pubis":3}
+
 
 
 modelYOLO = "yolov3"  #yolov3 or yolov3-tiny
 testRatio = 0.2
 cfgFolder = "/data/home/mio/yeh_image/cfg.stas_yeh"
-#cfgFolder = "/data/home/mio/3_pelvis/cfg.test"
 cfg_obj_names = "obj.names"
 cfg_obj_data = "obj.data"
 
 numBatch = 32
 numSubdivision = 8
 darknetEcec = "../darknet/darknet"
-
-#from keras.applications.vgg16 import (
-#    VGG16, preprocess_input, decode_predictions)
 
 #---------------------------------------------------------------------
 
