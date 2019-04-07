@@ -30,18 +30,22 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 >>      cfgFolder = "/data/home/cfg.stas_yeh"
 
 ## tt_YOLO_iou.py
->  This one python code not only print the Bounding-Box but also print the original Bounding-Box and count the iou for you
+
+>  This one python code not only print the Bounding-Box but also print the original Bounding-Box and count the iou for you<br>
+
 >  ### Chage to your data path
 
 >>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";             
 >>      modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";   
 >>      modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";
-<br>
+
 >>      path_out = '/data/home/mio/yeh_image/Test_image_yolo/' ##output image file 
 >>      path_in = '/data/home/mio/yeh_image/Test_image/'       ##resd test image   
->>      path_xml = '/data/home/mio/yeh_image/Test_xml/'        ##read test xml     
+>>      path_xml = '/data/home/mio/yeh_image/Test_xml/'        ##read test xml
+
 ## tt_all_YOLO.py
->  This one python code only print the Bounding-Box for you
+
+>  This one python code only print the Bounding-Box for you<br>
 >  ### Chage to your data path
 
 >>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";             
