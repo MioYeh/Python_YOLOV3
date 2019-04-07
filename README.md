@@ -4,6 +4,10 @@
 The tools of label image.<br>
 Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
+
+## Install OpenCV
+>>      pip install opencv-python
+
 ## How to put data 
 >>      Data--→ Images(.jpg,.png ...)<br>
 >>      ↳ Labels(.xml)<br>
