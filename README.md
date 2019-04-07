@@ -9,12 +9,13 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 >>      pip install opencv-python
 
 ## How to put data  
->>      Data--→ Images(.jpg,.png ...)
->>      ↳ Labels(.xml)
->>      ↳ Yolos(Inside data will make by code)
->>      ↳ Test_image
->>      ↳ Test_xml
->>      ↳ Test_image_yolo
+>>      Data--
+>>        ↳ Images(.jpg,.png ...)
+>>        ↳ Labels(.xml)
+>>        ↳ Yolos(Inside data will make by code)
+>>        ↳ Test_image
+>>        ↳ Test_xml
+>>        ↳ Test_image_yolo
 ## change_yolo_cfg.txt
 >   ### Open ../cfg/yolov3.cfg <br>
 >>      Line 6: set batch=24, this means we will be using 24 images for every training step
