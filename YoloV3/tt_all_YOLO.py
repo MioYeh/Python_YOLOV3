@@ -15,10 +15,10 @@ nmsThreshold = 0.4   #Non-maximum suppression threshold
 classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";
 modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";
 modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";
-#path_out = '/data/home/mio/sliver/cfg.sliver_416/yolo_image/' 
+
 path_out = '/data/home/mio/yeh_image/Test/' ##output image file
 path_in = '/data/home/mio/yeh_image/Test/' ##resd test image
-#path_in = '/data/home/mio/HE/'
+
 
 displayScreen = False  #Do you want to show the image on LCD?
 outputToFile = True   #output the predicted result to image or video file
