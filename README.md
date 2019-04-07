@@ -6,8 +6,8 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
 ## How to put data 
 >>   Data--→ Images(.jpg,.png ...)<br>
-           ↳ Labels(.xml)<br>
-           ↳ Yolos(Inside data will make by code)<br>
+>> >>          ↳ Labels(.xml)<br>
+>> >>          ↳ Yolos(Inside data will make by code)<br>
 ## change_yolo_cfg.txt
 >   ### Open ../cfg/yolov3.cfg <br>
 >>   Line 6: set batch=24, this means we will be using 24 images for every training step<br>
