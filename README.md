@@ -8,10 +8,13 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 ## Install OpenCV
 >>      pip install opencv-python
 
-## How to put data 
->>      Data--→ Images(.jpg,.png ...)<br>
->>      ↳ Labels(.xml)<br>
->>      ↳ Yolos(Inside data will make by code)<br>
+## How to put data  
+>>      Data--→ Images(.jpg,.png ...)
+>>      ↳ Labels(.xml)
+>>      ↳ Yolos(Inside data will make by code)
+>>      ↳ Test_image
+>>      ↳ Test_xml
+>>      ↳ Test_image_yolo
 ## change_yolo_cfg.txt
 >   ### Open ../cfg/yolov3.cfg <br>
 >>      Line 6: set batch=24, this means we will be using 24 images for every training step
@@ -39,23 +42,23 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
 >  ### Chage to your data path
 
->>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";             
->>      modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";   
->>      modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";
+>>      classesFile = "/data/home/cfg.stas_yeh/obj.names";             
+>>      modelConfiguration = "/data/home/cfg.stas_yeh/yolov3.cfg";   
+>>      modelWeights = "/data/home/cfg.stas_yeh/weights/yolov3_10000.weights";
 
->>      path_out = '/data/home/mio/yeh_image/Test_image_yolo/' ##output image file 
->>      path_in = '/data/home/mio/yeh_image/Test_image/'       ##resd test image   
->>      path_xml = '/data/home/mio/yeh_image/Test_xml/'        ##read test xml
+>>      path_out = '/data/home/Test_image_yolo/' ##output image file 
+>>      path_in = '/data/home/Test_image/'       ##resd test image   
+>>      path_xml = '/data/home/Test_xml/'        ##read test xml
 
 ## tt_all_YOLO.py
 
 >  This one python code only print the Bounding-Box for you<br>
 >  ### Chage to your data path
 
->>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";             
->>      modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";   
->>      modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";
+>>      classesFile = "/data/home/obj.names";             
+>>      modelConfiguration = "/data/home/yolov3.cfg";   
+>>      modelWeights = "/data/home/cfg.stas_yeh/yolov3_10000.weights";
 
->>      path_out = '/data/home/mio/yeh_image/Test_image_yolo/' ##output image file 
->>      path_in = '/data/home/mio/yeh_image/Test_image/'       ##resd test image   
+>>      path_out = '/data/home/Test_image_yolo/' ##output image file 
+>>      path_in = '/data/home/Test_image/'       ##resd test image   
    
