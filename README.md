@@ -5,9 +5,9 @@ The tools of label image.<br>
 Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
 ## How to put data 
->>   Data--→ Images(.jpg,.png ...)<br>
->> >>          ↳ Labels(.xml)<br>
->> >>          ↳ Yolos(Inside data will make by code)<br>
+>>      Data--→ Images(.jpg,.png ...)<br>
+>>      ↳ Labels(.xml)<br>
+>>      ↳ Yolos(Inside data will make by code)<br>
 ## change_yolo_cfg.txt
 >   ### Open ../cfg/yolov3.cfg <br>
 >>      Line 6: set batch=24, this means we will be using 24 images for every training step<br>
@@ -31,7 +31,21 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
 ## tt_YOLO_iou.py
 >  This one python code not only print the Bounding-Box but also print the original Bounding-Box and count the iou for you
-
+>  ### Chage to your data path 
+>>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";             <br>
+>>      modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";     <br>
+>>      modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";<br>
+<br>
+>>      path_out = '/data/home/mio/yeh_image/Test_image_yolo/' ##output image file <br>
+>>      path_in = '/data/home/mio/yeh_image/Test_image/'       ##resd test image   <br>
+>>      path_xml = '/data/home/mio/yeh_image/Test_xml/'        ##read test xml     <br>
 ## tt_all_YOLO.py
 >  This one python code only print the Bounding-Box for you
+>  ### Chage to your data path 
+>>      classesFile = "/data/home/mio/yeh_image/cfg.stas_yeh/obj.names";               <br>
+>>      modelConfiguration = "/data/home/mio/yeh_image/cfg.stas_yeh/yolov3.cfg";       <br>
+>>      modelWeights = "/data/home/mio/yeh_image/cfg.stas_yeh/weights/yolov3.backup";  <br>
+ <br>
+>>      path_out = '/data/home/mio/yeh_image/Test/' ##output image file  <br>
+>>      path_in = '/data/home/mio/yeh_image/Test/' ##resd test image     <br>
    
