@@ -2,7 +2,7 @@
 
 ## linux_v1.4.0
 The tools of label image.<br>
-Or you can download here: <a>https://tzutalin.github.io/labelImg/
+Or you can download here: <a> https://tzutalin.github.io/labelImg/
 
 ## How to put data 
    xmlFolder
@@ -20,11 +20,17 @@ Or you can download here: <a>https://tzutalin.github.io/labelImg/
    Line 783: set classes=2, the number of categories we want to detect<br>
    
 ## Train.py
->  ### chage to your data path 
+>  ### Chage to your data path 
    xmlFolder = "/data/home/Labels" <br>
    imgFolder = "/data/home/Images" <br>
    saveYoloPath = "/data/home/Yolos" <br>
->  ### chage to your class    
+>  ### Chage to your class    
    classList = { "stas":0 , "dog":1 } <br>
->  ### give the path, where you want to make a cfg.XXX floder
+>  ### Give the path, where you want to make a cfg.XXX floder
    cfgFolder = "/data/home/cfg.stas_yeh" <br>
+
+## tt_YOLO_iou.py
+>  This one python code not only print the Bounding-Box but also print the original Bounding-Box and count the iou for you
+
+## tt_all_YOLO.py
+>  This one python code only print the Bounding-Box for you
