@@ -8,6 +8,18 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
 ## Install OpenCV
       pip install opencv-python
 
+## Set the Darknet
+      git clone https://github.com/pjreddie/darknet
+      cd darknet
+      make
+      
+## Using GPU to play
+      Go to ../darknet
+      Open " Makefile " this text, to change something
+      
+      GPU = 0 -> 1
+      CUDNN = 0 -> 1
+      
 ## How to put data  
       Data--
         ↳ Images(.jpg,.png ...)
@@ -34,7 +46,7 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
       saveYoloPath = "/data/home/Yolos"
 >  ### Chage to your class    
       classList = { "stas":0 , "dog":1 }
->  ### Give the path, where you want to make a cfg.XXX floder
+>  ### Give the path, where you want to make a " cfg.XXX "
       cfgFolder = "/data/home/cfg.stas_yeh"
 
 ## tt_YOLO_iou.py
