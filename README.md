@@ -48,6 +48,8 @@ Or you can download here: <a> https://tzutalin.github.io/labelImg/
       classList = { "stas":0 , "dog":1 }
 >  ### Give the path, where you want to make a " cfg.XXX "
       cfgFolder = "/data/home/cfg.stas_yeh"
+>  ### if you need run with two gpu, you need change line225
+      executeCmd = darknetEcec + " detector train " + cfgFolder + folderCharacter + \"obj.data " + cfgFolder + folderCharacter + fileCFG + " darknet53.conv.74 -gpus 0,1"
 
 ## tt_YOLO_iou.py
 
